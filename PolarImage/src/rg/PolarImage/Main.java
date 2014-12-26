@@ -13,7 +13,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		/*
 		BipolarCoordinateCalculator pc = new BipolarCoordinateCalculator(1);
 		
 		Point2D[] arr = {
@@ -26,7 +26,10 @@ public class Main {
 		for(int i=0; i<arr.length; i++) {
 			Point2D cart = pc.toCartesian(arr[i]);
 			System.out.println("" + arr[i].toString() + " => " + cart.toString() + " => " + pc.toBipolar(cart).toString());
-		}
+		}*/
+		Rectangle2D.Double rect = new Rectangle2D.Double(-50, 20, 100, 100);
+		BitmapPainter bp = new BitmapPainter();
+		bp.polarTraverse(rect,  true);
 		
 
 	}
