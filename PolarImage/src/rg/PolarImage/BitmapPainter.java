@@ -4,10 +4,13 @@ import java.io.*;
 
 import javax.imageio.*;
 
+import java.awt.Shape;
 import java.awt.geom.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 import java.util.logging.*;
+
+
 //bipolar bitmap painter
 //generates a motion sequence for bipolar painting
 public class BitmapPainter {
@@ -52,5 +55,25 @@ public class BitmapPainter {
 		}
 	}
 	
+	public interface ContainsTest
+	{
+		boolean contains(Point2D p);
+	}
+	
+	public void generateTraversingPath(Point2D start, boolean xAxis, Shape sh) throws Exception {
+		generateTraversingPath(start, xAxis, new ContainsTest() {
+			@Override
+			public boolean contains(Point2D p) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+	}
+	
+	public void generateTraversingPath(Point2D start, boolean xAxis, ContainsTest test) throws Exception {
+		if (!test.contains(start)) throw new Exception();
+		
+		
+	}
 	
 }
