@@ -101,9 +101,26 @@ class ConstVMotionCalculator : public MotionCalculatorBase
 
 class TrapezoidalMotionCalculator : MotionCalculatorBase
 {
+  protected:
+    double _maxV;
+    double _accel;
+    int _targetPos;
+    int _curPos;
+    int _phase;
+    
+    
+    
   public:
     TrapezoidalMotionCalculator(double freq) : MotionCalculatorBase(freq) {
     };
+    
+    void setMotionParams(int destinationPosition, double maxVelocity, double maxAccel)
+    {
+      
+    }
+    
+    
+    
 };
 
 
