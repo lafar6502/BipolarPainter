@@ -1,15 +1,15 @@
 /*
- * IntSingleAxisTrapezGenerator.cpp
+ * IntMultiAxisTrapezGenerator.cpp
  *
  *  Created on: Dec 31, 2014
  *      Author: rg
  */
 
-#include "IntSingleAxisTrapezGenerator.h"
+#include "IntMultiAxisTrapezGenerator.h"
 #include <math.h>
 #include <stdio.h>
 
-IntSingleAxisTrapezGenerator::IntSingleAxisTrapezGenerator() {
+IntMultiAxisTrapezGenerator::IntMultiAxisTrapezGenerator() {
 	// TODO Auto-generated constructor stub
 	_accel = _decel = 1;
 	_maxV = 100;
@@ -19,11 +19,11 @@ IntSingleAxisTrapezGenerator::IntSingleAxisTrapezGenerator() {
 	_stage = 0;
 }
 
-IntSingleAxisTrapezGenerator::~IntSingleAxisTrapezGenerator() {
+IntMultiAxisTrapezGenerator::~IntMultiAxisTrapezGenerator() {
 	// TODO Auto-generated destructor stub
 }
 
-void IntSingleAxisTrapezGenerator::PrepareTrajectory() {
+void IntMultiAxisTrapezGenerator::PrepareTrajectory() {
 	_t = 0;
 	_startPos = _curPos;
 	_dir = _targetPos > _startPos ? 1 : -1;
@@ -47,11 +47,11 @@ void IntSingleAxisTrapezGenerator::PrepareTrajectory() {
 
 }
 
-bool IntSingleAxisTrapezGenerator::MotionInProgress() {
+bool IntMultiAxisTrapezGenerator::MotionInProgress() {
 	return _stage > 0;
 }
 
-void IntSingleAxisTrapezGenerator::NextStep() {
+void IntMultiAxisTrapezGenerator::NextStep() {
 	long pv = _curV;
 	if (_stage == 1) {
 		_curV += _accel * _dir;
@@ -84,55 +84,55 @@ void IntSingleAxisTrapezGenerator::NextStep() {
 	}
 }
 
-unsigned int IntSingleAxisTrapezGenerator::GetStepCount() {
+unsigned int IntMultiAxisTrapezGenerator::GetStepCount() {
 	return _t;
 }
 
-unsigned int IntSingleAxisTrapezGenerator::GetMotionEndStep() {
+unsigned int IntMultiAxisTrapezGenerator::GetMotionEndStep() {
 	return _motionT;
 }
 
-long IntSingleAxisTrapezGenerator::GetCurrentPosition() {
+long IntMultiAxisTrapezGenerator::GetCurrentPosition() {
 	return _curPos;
 }
 
-void IntSingleAxisTrapezGenerator::SetCurrentPosition(long p) {
+void IntMultiAxisTrapezGenerator::SetCurrentPosition(long p) {
 	_curPos = p;
 }
 
-long IntSingleAxisTrapezGenerator::GetTargetPosition() {
+long IntMultiAxisTrapezGenerator::GetTargetPosition() {
 	return _targetPos;
 }
 
-void IntSingleAxisTrapezGenerator::SetTargetPosition(long p) {
+void IntMultiAxisTrapezGenerator::SetTargetPosition(long p) {
 	_targetPos = p;
 }
 
-int IntSingleAxisTrapezGenerator::GetCurrentVelocity() {
+int IntMultiAxisTrapezGenerator::GetCurrentVelocity() {
 	return _curV;
 }
 
-void IntSingleAxisTrapezGenerator::SetCurrentVelocity(int v) {
+void IntMultiAxisTrapezGenerator::SetCurrentVelocity(int v) {
 	_curV = v;
 }
 
-int IntSingleAxisTrapezGenerator::GetMaxVelocity() {
+int IntMultiAxisTrapezGenerator::GetMaxVelocity() {
 	return _maxV;
 }
 
-void IntSingleAxisTrapezGenerator::SetMaxVelocity(int v) {
+void IntMultiAxisTrapezGenerator::SetMaxVelocity(int v) {
 	_maxV = v;
 }
 
-int IntSingleAxisTrapezGenerator::GetAcceleration() {
+int IntMultiAxisTrapezGenerator::GetAcceleration() {
 	return _accel;
 }
 
-void IntSingleAxisTrapezGenerator::OnMotionCompleted() {
+void IntMultiAxisTrapezGenerator::OnMotionCompleted() {
 
 }
 
-void IntSingleAxisTrapezGenerator::SetAcceleration(int a) {
+void IntMultiAxisTrapezGenerator::SetAcceleration(int a) {
 	_accel = a;
 	_decel = a;
 }

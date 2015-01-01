@@ -38,9 +38,9 @@ void TestTrapez2()
 {
 	IntSingleAxisTrapezGenerator gen;
 	gen.SetAcceleration(1);
-	gen.SetMaxVelocity(20);
+	gen.SetMaxVelocity(50);
 	gen.SetCurrentPosition(0);
-	gen.SetTargetPosition(2000);
+	gen.SetTargetPosition(1400);
 	gen.PrepareTrajectory();
 	printf("%d: pos %d, vel %d\n", gen.GetStepCount(), gen.GetCurrentPosition(), gen.GetCurrentVelocity());
 	while(gen.MotionInProgress())
