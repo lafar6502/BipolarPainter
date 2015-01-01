@@ -63,11 +63,12 @@ void SingleAxisTrapezGenerator::PrepareTrajectory() {
 	double s2 = dect * _maxV / 2;
 	if (s1 + s2 > dist) {
 		//we don't reach _maxv
-		acc*t1^2 + dec * t2^2 = dist;
-		t1 * acc = t2 * dec; => t2 = t1 * acc / dec;
-		acc * t1^2 + (t1 * acc) ^ 2 / dec = dist;
-		acc t1^2 + acc^2/dec t1^2 = dist;
-		t1^2 * (acc + acc^2/dec) = dist;
+
+//		acc*t1^2 + dec * t2^2 = dist;
+//		t1 * acc = t2 * dec; => t2 = t1 * acc / dec;
+//		acc * t1^2 + (t1 * acc) ^ 2 / dec = dist;
+//		acc t1^2 + acc^2/dec t1^2 = dist;
+//		t1^2 * (acc + acc^2/dec) = dist;
 
 		_motionT = (int) round(acct + dect);
 		_brakingT = _motionT - (int)round(dect);

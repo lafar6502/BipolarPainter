@@ -8,9 +8,14 @@
 #include "IntSingleAxisTrapezGenerator.h"
 #include <math.h>
 
-IntSingleAxisTrapezGenerator::IntSingleAxisTrapezGenerator(int base) {
+IntSingleAxisTrapezGenerator::IntSingleAxisTrapezGenerator() {
 	// TODO Auto-generated constructor stub
-
+	_accel = _decel = 1;
+	_maxV = 100;
+	_curPos = 0;
+	_curV = 0;
+	_t = _motionT = _brakeT = 0;
+	_stage = 0;
 }
 
 IntSingleAxisTrapezGenerator::~IntSingleAxisTrapezGenerator() {
@@ -19,8 +24,8 @@ IntSingleAxisTrapezGenerator::~IntSingleAxisTrapezGenerator() {
 
 void IntSingleAxisTrapezGenerator::PrepareTrajectory() {
 	_t = 0;
+	_startPos = _curPos;
 	_dir = _targetPos > _startPos ? 1 : -1;
-	_curPos = _startPos;
 	_stage = 1;
 	long dist = _dir * (_targetPos - _curPos);
 	long acct = _maxV / _accel;
@@ -46,25 +51,23 @@ bool IntSingleAxisTrapezGenerator::MotionInProgress() {
 }
 
 void IntSingleAxisTrapezGenerator::NextStep() {
-
-
-	double pv = _currentV; //prev velocity
+	long pv = _curV;
 	if (_stage == 1) {
-		_currentV += _accel * dir;
-		if (dir * _currentV >= _maxV) {
-			_currentV = _maxV * dir;
+		_curV += _accel * _dir;
+		if (_curV * _dir >= _maxV) {
+			_curV = _maxV * _dir;
 			_stage = 2;
 		}
 	};
+
 	if (_stage == 3) {
-		_currentV -= _accel * dir;
+		_curV -= _decel * _dir;
 		//TODO crawl to destination if necessary and _currentV reaches 0
 	};
-	_currentP += (pv + _currentV) / 2.0;
+	_curPos += (pv + _curV) / 2;
 	_t++;
 	if (_stage == 2 || _stage == 1) {
-
-		if (_t >= _brakingT) {
+		if (_t >= _brakeT) {
 			_stage = 3;
 		}
 	};
@@ -75,7 +78,54 @@ void IntSingleAxisTrapezGenerator::NextStep() {
 }
 
 unsigned int IntSingleAxisTrapezGenerator::GetStepCount() {
+	return _t;
 }
 
 unsigned int IntSingleAxisTrapezGenerator::GetMotionEndStep() {
+	return _motionT;
+}
+
+long IntSingleAxisTrapezGenerator::GetCurrentPosition() {
+	return _curPos;
+}
+
+void IntSingleAxisTrapezGenerator::SetCurrentPosition(long p) {
+	_curPos = p;
+}
+
+long IntSingleAxisTrapezGenerator::GetTargetPosition() {
+	return _targetPos;
+}
+
+void IntSingleAxisTrapezGenerator::SetTargetPosition(long p) {
+	_targetPos = p;
+}
+
+int IntSingleAxisTrapezGenerator::GetCurrentVelocity() {
+	return _curV;
+}
+
+void IntSingleAxisTrapezGenerator::SetCurrentVelocity(int v) {
+	_curV = v;
+}
+
+int IntSingleAxisTrapezGenerator::GetMaxVelocity() {
+	return _maxV;
+}
+
+void IntSingleAxisTrapezGenerator::SetMaxVelocity(int v) {
+	_maxV = v;
+}
+
+int IntSingleAxisTrapezGenerator::GetAcceleration() {
+	return _accel;
+}
+
+void IntSingleAxisTrapezGenerator::OnMotionCompleted() {
+
+}
+
+void IntSingleAxisTrapezGenerator::SetAcceleration(int a) {
+	_accel = a;
+	_decel = a;
 }
