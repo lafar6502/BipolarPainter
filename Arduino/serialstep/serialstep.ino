@@ -1,9 +1,11 @@
-#include <TimerThree.h>
 
+#include <TimerThree.h>
+#include <IntSingleAxisTrapezGenerator.h>
 #include <sysint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <SoftwareSerial.h>
+
 
 
 class SteppoState
@@ -52,77 +54,6 @@ public:
   
 };
 
-class MotionCalculatorBase
-{
-  protected:
-    double _masterFreq;
-  public:
-    MotionCalculatorBase(double masterFrequency) {
-      _masterFreq = masterFrequency;
-    };
-    
-    virtual unsigned int getSequenceLength() {
-      return 0;
-    };
-    
-    virtual double getPosition(unsigned int t) {
-      return 0;
-    };
-    
-    virtual long getStepPosition(unsigned int t) {
-      return (long) (getPosition(t));
-    };
-    
-    virtual int getStepValue(unsigned int t) {
-      long p1 = getStepPosition(t);
-      long p2 = t == 0 ? 0 : getStepPosition(t - 1);
-      return p1 > p2 ? 1 : p1 < p2 ? -1 : 0;
-    };
-};
-
-//constant speed motion
-class ConstVMotionCalculator : public MotionCalculatorBase
-{
-  private:
-    double _spd;
-  public:
-    ConstVMotionCalculator(double freq) :MotionCalculatorBase(freq) {
-
-    };
-    
-    virtual void setSpeed(double spd) {
-      _spd = spd;
-    };
-    
-    virtual double getPosition(unsigned int t) {
-      return _spd * t / _masterFreq;  
-    };
-};
-
-class TrapezoidalMotionCalculator : MotionCalculatorBase
-{
-  protected:
-    double _maxV;
-    double _accel;
-    int _targetPos;
-    int _curPos;
-    int _phase;
-    
-    
-    
-  public:
-    TrapezoidalMotionCalculator(double freq) : MotionCalculatorBase(freq) {
-    };
-    
-    void setMotionParams(int destinationPosition, double maxVelocity, double maxAccel)
-    {
-      
-    }
-    
-    
-    
-};
-
 
 
 
@@ -149,16 +80,26 @@ unsigned int phases8[] = {
 unsigned int pins[] = {4, 5, 6, 7};
 
 SteppoState steppo(phases8, sizeof(phases8) / sizeof(unsigned int), pins, sizeof(pins) / sizeof(unsigned int));
+IntSingleAxisTrapezGenerator gen;
+long resolution = 10000;
+double axisPos = 0.0;
 
 void tick(void) {
   counter++;
+  if (gen.MotionInProgress()) {
+    gen.NextStep();
+    long pos = gen.GetCurrentPosition();
+    double newPos = ((double) pos) / resolution;
+    
+  };
+  
   steppo.makeStep(-1);
   //steppo.tick();
 };
 
 
 
-ConstVMotionCalculator calc(20000);
+
 unsigned int t = 0;
 
 
@@ -167,8 +108,6 @@ unsigned int t = 0;
 
 void setup()
 {
-  calc.setSpeed(5000);
-
   Serial.begin(9600);
   Serial.println("hello\n");
   int prescale = TCCR1B & 0x7;
@@ -178,13 +117,24 @@ void setup()
     pinMode(i, OUTPUT); 
   };
   cli();
-  Timer3.initialize(2000);
+  Timer3.initialize(100000);
   Timer3.attachInterrupt(tick);
-  //SetupTimer2(40000);
-  //TCNT1 = 20000;
-  //TIMSK1 |= (1 << TOIE1);
-  //TCCR1B = (TCCR1B & ~0x7) | 0x1;
-//  TCCR1B |= 0x1; //timer 1 prescale 8
+  
+  //motion path gen
+  gen.SetCurrentPosition(0);
+  gen.SetAcceleration(0.002 * resolution);
+  gen.SetMaxVelocity(0.03 * resolution);
+  gen.SetTargetPosition(4L * resolution);
+
+  gen.PrepareTrajectory();
+  Serial.print("dest: ");
+  Serial.print(gen.GetTargetPosition());
+   Serial.print(",maxvel: ");
+  Serial.print(gen.GetCurrentVelocity());
+  Serial.print(",dec: ");
+  Serial.print(gen.GetDeceleration());  
+  Serial.println("");
+
   sei();
 }
 
@@ -232,10 +182,22 @@ ISR(TIMER2_OVF_vect)
 void loop()
 {
   delay(1000);
-  Serial.print("pos:");
-  Serial.print(calc.getPosition(t));
+  Serial.print("step:");
+  Serial.print(gen.GetStepCount());
+  Serial.print("/");
+  Serial.print(gen.GetMotionEndStep() - gen.GetStepCount());
+  Serial.print(", pos:");
+  Serial.print(gen.GetCurrentPosition());
+    Serial.print("/");
+  Serial.print(gen.GetTargetPosition() - gen.GetCurrentPosition());
+  
+  Serial.print(", vel:");
+  Serial.print(gen.GetCurrentVelocity());
+    Serial.print(", dec:");
+  Serial.print(gen.GetDeceleration());
+  Serial.println("");
   Serial.print(" ");
-        Serial.println(calc.getStepValue(t));
+
     t++;
 /*  Serial.print("counter:");
   Serial.println(counter);
