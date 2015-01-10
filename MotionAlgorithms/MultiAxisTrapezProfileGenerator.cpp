@@ -1,9 +1,9 @@
-#include "TrapezProfileGenerator.h"
+#include "MultiAxisTrapezProfileGenerator.h"
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
 
-TrapezProfileGenerator::TrapezProfileGenerator()
+MultiAxisTrapezProfileGenerator::MultiAxisTrapezProfileGenerator()
 {
 	_curP = _targetP = _startP = 0;
 	_curV = 0;
@@ -12,7 +12,7 @@ TrapezProfileGenerator::TrapezProfileGenerator()
 	_t = 0;
 };
 
-bool TrapezProfileGenerator::PrepareMotion()
+bool MultiAxisTrapezProfileGenerator::PrepareMotion()
 {
 	if (_accel <= 0 || _accel > 1) return false;
 	if (_maxV <= 0 || _accel > 1) return false;
@@ -43,13 +43,13 @@ bool TrapezProfileGenerator::PrepareMotion()
 	
 };
 
-double TrapezProfileGenerator::CalculateDecelerationDistance(double v, double decel, double* t) {
+double MultiAxisTrapezProfileGenerator::CalculateDecelerationDistance(double v, double decel, double* t) {
 	*t = v / decel;
 	double dist = 0.5 * v * v / decel;
 	return dist;
 }
 
-double TrapezProfileGenerator::CalculateDeceleration(double distance, double v, double* t) {
+double MultiAxisTrapezProfileGenerator::CalculateDeceleration(double distance, double v, double* t) {
 	//distance = at2/2
 	//v = at;
 	//t = v/a;
@@ -60,7 +60,7 @@ double TrapezProfileGenerator::CalculateDeceleration(double distance, double v, 
 	return a;
 }
 
-void TrapezProfileGenerator::NextStep()
+void MultiAxisTrapezProfileGenerator::NextStep()
 {
 	if (_stage == 0) {
 		return;
@@ -118,6 +118,6 @@ void TrapezProfileGenerator::NextStep()
 	_t++;
 };
 
-void TrapezProfileGenerator::PrintState(char* buf, int len) {
+void MultiAxisTrapezProfileGenerator::PrintState(char* buf, int len) {
 	snprintf(buf, len, "T:%d, P:%f, V:%f, ST:%d, TOGO: %f", _t, GetCurrentPosition(), GetCurrentVelocity(), _stage, GetRemainingDistanceAbs());
 }

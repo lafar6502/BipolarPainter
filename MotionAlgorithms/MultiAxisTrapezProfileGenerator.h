@@ -1,24 +1,23 @@
-#ifndef _TRAPEZPROFILEGENERATOR_H_INCLUDED
-#define _TRAPEZPROFILEGENERATOR_H_INCLUDED
+#ifndef _MULTIAXISTRAPEZPROFILEGENERATOR_H_INCLUDED
+#define _MULTIAXISTRAPEZPROFILEGENERATOR_H_INCLUDED
 
-#include "ProfileGenerator.h"
+#include "Vect.h"
 
-class TrapezProfileGenerator : public ProfileGenerator
+class MultiAxisTrapezProfileGenerator 
 {
 	private:
-		double _curP;
-		double _targetP;
-		double _startP;
-		double _curV;
-		double _maxV;
-		double _accel;
-		double _curAccel;
-		double _baseV;
-		double _brakeD; //where to start braking
+		Vect<double> _curP;
+		Vect<double> _targetP;
+		Vect<double> _curV;
+		Vect<double> _maxAccel;
+		Vect<double> _maxV;
+		Vect<double> _curAccel;
+		Vect<double> _baseV;
+		
 		int _t;
 		int _stage;
 	public:
-		TrapezProfileGenerator();	
+		MultiAxisTrapezProfileGenerator();	
 		double GetCurrentPosition() { return _curP; }
 		void SetCurrentPosition(double p) { 
 			_curP = p;
