@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o ProfileGenerator.o MultiAxisTrapezProfileGenerator.o TrapezProfileGenerator.o
-LINKOBJ  = main.o ProfileGenerator.o MultiAxisTrapezProfileGenerator.o TrapezProfileGenerator.o
+OBJ      = main.o ProfileGenerator.o MultiAxisTrapezProfileGenerator.o TrapezProfileGenerator.o MultiAxisGearedProfileGenerator.o
+LINKOBJ  = main.o ProfileGenerator.o MultiAxisTrapezProfileGenerator.o TrapezProfileGenerator.o MultiAxisGearedProfileGenerator.o
 LIBS     = -L"C:/tools/Dev-Cpp/MinGW64/lib" -L"C:/tools/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
 INCS     = -I"C:/tools/Dev-Cpp/MinGW64/include" -I"C:/tools/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/tools/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
 CXXINCS  = -I"C:/tools/Dev-Cpp/MinGW64/include" -I"C:/tools/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/tools/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/tools/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
@@ -35,3 +35,6 @@ MultiAxisTrapezProfileGenerator.o: MultiAxisTrapezProfileGenerator.cpp
 
 TrapezProfileGenerator.o: TrapezProfileGenerator.cpp
 	$(CPP) -c TrapezProfileGenerator.cpp -o TrapezProfileGenerator.o $(CXXFLAGS)
+
+MultiAxisGearedProfileGenerator.o: MultiAxisGearedProfileGenerator.cpp
+	$(CPP) -c MultiAxisGearedProfileGenerator.cpp -o MultiAxisGearedProfileGenerator.o $(CXXFLAGS)

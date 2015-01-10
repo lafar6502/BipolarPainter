@@ -3,15 +3,12 @@
 #include <stdio.h>
 #include <math.h>
 
-MultiAxisTrapezProfileGenerator::MultiAxisTrapezProfileGenerator()
+MultiAxisTrapezProfileGenerator::MultiAxisTrapezProfileGenerator(int axes) 
 {
-	_curP = _targetP = _startP = 0;
-	_curV = 0;
-	_accel = 0;
-	_baseV = 0;
-	_t = 0;
+
 };
 
+/*
 bool MultiAxisTrapezProfileGenerator::PrepareMotion()
 {
 	if (_accel <= 0 || _accel > 1) return false;
@@ -121,3 +118,6 @@ void MultiAxisTrapezProfileGenerator::NextStep()
 void MultiAxisTrapezProfileGenerator::PrintState(char* buf, int len) {
 	snprintf(buf, len, "T:%d, P:%f, V:%f, ST:%d, TOGO: %f", _t, GetCurrentPosition(), GetCurrentVelocity(), _stage, GetRemainingDistanceAbs());
 }
+
+
+*/

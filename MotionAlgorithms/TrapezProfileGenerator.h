@@ -73,6 +73,7 @@ class TrapezProfileGenerator : public ProfileGenerator
 		void NextStep();
 		virtual void PrintState(char*buf, int len);
 		
+		
 };
 
 #endif
