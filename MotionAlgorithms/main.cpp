@@ -41,7 +41,7 @@ void TestMultiAxisTrapez() {
 		return;
 	}
 	int cnt = 0;
-	while(p.InMotion() && cnt++ < 50) {
+	while(p.InMotion() && cnt++ < 500) {
 		Vect<double> pos = p.GetCurrentPos();
 		pos.ToString(buf, sizeof(buf));
 		printf("%s\n", buf);

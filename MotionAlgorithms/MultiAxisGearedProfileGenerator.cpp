@@ -14,11 +14,7 @@ bool MultiAxisGearedProfileGenerator::StartMovingToDestination(Vect<double> dest
 
 Vect<double> MultiAxisGearedProfileGenerator::GetCurrentPos() {
 	double pos = _gen.GetCurrentPosition();
-	(_ratios * pos).Print("mp");
 	Vect<double> p2 = _ratios * pos;
-	_ratios.Print("ratios");
-	p2.Print("multed");
-	printf("pos: %f\n", pos);
 	return p2;
 };
 

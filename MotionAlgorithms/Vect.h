@@ -6,6 +6,8 @@
 
 #define MAXDIM 4
 
+//vector class for integer or floating point vectors
+//max size is 4
 template<class T> class Vect
 {
 	private:
@@ -37,8 +39,6 @@ template<class T> class Vect
 		Vect<T>(const Vect<T>& rhs) {
 			_len = rhs._len;
 			memcpy(_v, rhs._v, MAXDIM * sizeof(T));
-			rhs.Print("rhs");
-			Print("copy");
 		};
 		
 		int Size() {
@@ -113,25 +113,23 @@ template<class T> class Vect
 			return multiply(d);
 		};
 		
-		Vect<T>& operator+(const Vect<T>& rhs) {
+		Vect<T> operator+(const Vect<T>& rhs) {
 			Vect<T> r(*this);
 			return r.add(rhs);
 		};
 		
-		Vect<T>& operator-(const Vect<T>& rhs) {
+		Vect<T> operator-(const Vect<T>& rhs) {
 			Vect<T> r(*this);
 			return r.subtract(rhs);
 		};
 		
-		Vect<T>& operator*(double v) {
+		Vect<T> operator*(double v) {
 			Vect<T> r(*this);
-			r.Print("orig");
 			r.multiply(v);
-			r.Print("mul");
 			return r;
 		};
 		
-		Vect<T>& operator/(T v) {
+		Vect<T> operator/(T v) {
 			Vect<T> r(*this);
 			return r.divide(v);
 		};
