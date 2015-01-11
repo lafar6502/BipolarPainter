@@ -4,6 +4,7 @@
 #include "MultiAxisGearedProfileGenerator.h"
 #include <stdio.h>
 #include "Vect.h"
+#include <math.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -50,6 +51,14 @@ void TestMultiAxisTrapez() {
 	
 }
 
+void getVal(double t, double* arr);
+
+void TestRasterize()
+{
+	
+	
+}
+
 void TestVect()
 {
 	char buf[100];
@@ -73,8 +82,43 @@ void TestVect()
 	printf("%s\n", buf);
 }
 
-int main(int argc, char** argv) {
+void circleParametric(double t, double r, double* vals) {
+	vals[1] = r * sin(t);
+	vals[0] = r * cos(t);
+};
+
+void TestRasterization()
+{
+	double r = 50;
+	double res = 0.01;
+	double prev[2], cur[2];
+	circleParametric(0, r, cur);
+	memcpy(prev, cur, sizeof(prev));
+	double t = 0;
+	int n = 0;
+	char buf[50];
+	while(t < 2*3.14159) {
+		circleParametric(t, r, cur);
+		int p1 = (int) trunc(prev[0]);
+		int p2 = (int) trunc(cur[0]);
+		int dirx = p2 - p1;
+		p1 = (int) trunc(prev[1]);
+		p2 = (int) trunc(cur[1]);
+		int diry = p2 - p1;
+		printf("%d: [%d, %d\n", n, dirx, diry);
+		memcpy(prev, cur, sizeof(prev));
+		t += res;	
+		n++;
+	}
 	
+	
+}
+
+
+
+int main(int argc, char** argv) {
+	TestRasterization();
+	return 0;
 	TestMultiAxisTrapez();
 	return 0;
 	TestVect();
