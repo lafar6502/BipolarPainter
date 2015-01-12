@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "Vect.h"
 #include <math.h>
+#include "ParametricTest.h"
+
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -51,12 +53,39 @@ void TestMultiAxisTrapez() {
 	
 }
 
-void getVal(double t, double* arr);
 
-void TestRasterize()
+
+void TestParametricStepping()
 {
+	double res = 0.002;
+	CirclePrm cp;
+	cp.r = 50;
+	double t = 0;
+	parametricCurve crv = pcircle;
+	double funVal[2];
+	long funInt[2];
+	long prevFunInt[2];
+	long difz[2];
 	
-	
+	memset(difz, 0, sizeof(difz));
+	crv(t, &cp, funVal);
+	roundCoords(funVal, sizeof(funVal) / sizeof(double), prevFunInt);
+	int step = 1;
+	while(t < 1) {
+		crv(t, &cp, funVal);
+		roundCoords(funVal, sizeof(funVal) / sizeof(double), funInt);
+		for (int i=0; i<2; i++) {
+			difz[i] = funInt[i] - prevFunInt[i];
+			if (abs(difz[i]) > 1) {
+				printf("RESOLUTION too low: %d, %f\n", i, difz[i]);
+				return;
+			}
+		}
+		printf("%d. %f\t->\t%d, %d\n", step, t, difz[0], difz[1]);
+		memcpy(prevFunInt, funInt, sizeof(funInt));
+		t+= res;
+		step++;
+	}
 }
 
 void TestVect()
@@ -87,10 +116,14 @@ void circleParametric(double t, double r, double* vals) {
 	vals[0] = r * cos(t);
 };
 
+
+
+
+
 void TestRasterization()
 {
 	double r = 50;
-	double res = 0.01;
+	double res = 0.025;
 	double prev[2], cur[2];
 	circleParametric(0, r, cur);
 	memcpy(prev, cur, sizeof(prev));
@@ -116,7 +149,12 @@ void TestRasterization()
 
 
 
+
+
+
 int main(int argc, char** argv) {
+	TestParametricStepping();
+	return 0;
 	TestRasterization();
 	return 0;
 	TestMultiAxisTrapez();

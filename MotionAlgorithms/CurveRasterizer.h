@@ -16,8 +16,26 @@ we assume no discontinuities in the reverse kinematics formula (or more advanced
 
 class CurveRasterizer
 {
+	private:
+		ParametricCurve _curve;
+		void*	_state;
+		double _t;
+		double _res; //resolution
 	public:
-			
+		typedef void (*ParametricCurve)(double t, void* state, double* retVal);
+		CurveRasterizer(ParametricCurve curve, void* state);
+		
+		double GetResolution() { 
+			return _res;
+		};
+		
+		void SetResolution(double res) {
+			_res = res;
+		}
+		
+		void NextStep();
+		
+		
 };
 
 
